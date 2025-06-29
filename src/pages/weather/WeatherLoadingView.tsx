@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 export default function WeatherLoadingView() {
 
   return (
-    <Stack>
+    <Stack alignItems="center">
       <CircularProgress />
     </Stack>
   )

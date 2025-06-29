@@ -6,6 +6,7 @@ import SearchButton from "./SearchButton";
 import Stack from "@mui/material/Stack";
 import Weather from './weather/Weather'
 import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
 
 export default function HomePage() {
   const {
@@ -24,9 +25,17 @@ export default function HomePage() {
   })
 
   return (
-    <Stack flex={1} alignItems="center">
+    // <Stack flex={1} alignItems="center">
+    <Stack
+      flex={1}
+      maxWidth={400}
+      minWidth={400}
+      alignSelf="center"
+      alignItems="stretch"
+      px={3}
+    >
       <Box flex="0 1 25%" />
-      <Stack direction="row" justifyContent="center" alignItems="center">
+      <Stack direction="row" justifyContent="stretch" alignItems="center">
         <SearchInput
           autoFocus
           value={cityName}
@@ -48,5 +57,7 @@ export default function HomePage() {
         loadingError={weatherLoadingError}
       />
     </Stack>
+
+    // </Stack>
   )
 }

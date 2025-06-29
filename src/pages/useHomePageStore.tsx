@@ -21,8 +21,7 @@ export default function useHomePageStore() {
   }
 
   async function initSavedWeatherIfNeeded() {
-    // init state from LocalStorage
-    // fetch weather
+
   }
 
   async function updateWeatherIfNeeded() {
