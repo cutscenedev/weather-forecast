@@ -1,31 +1,22 @@
-import { useAppConfig } from "../app/config/AppConfig";
 import useHomePageStore from "./useHomePageStore";
-import useLayoutEffectOnce from "../components/hooks/useLayoutEffectOnce";
 import SearchInput from "./SearchInput";
 import SearchButton from "./SearchButton";
 import Stack from "@mui/material/Stack";
 import Weather from './weather/Weather'
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 
 export default function HomePage() {
   const {
     weather,
     weatherLoading,
     weatherLoadingError,
-    initSavedWeatherIfNeeded,
-    updateWeatherIfNeeded,
+    actualizeWeather,
 
     cityName,
     changeCityName,
   } = useHomePageStore();
 
-  useLayoutEffectOnce(async () => {
-    void initSavedWeatherIfNeeded();
-  })
-
   return (
-    // <Stack flex={1} alignItems="center">
     <Stack
       flex={1}
       maxWidth={400}
@@ -40,14 +31,14 @@ export default function HomePage() {
           autoFocus
           value={cityName}
           onChange={changeCityName}
-          onBlur={updateWeatherIfNeeded}
-          onEnterPress={updateWeatherIfNeeded}
+          onBlur={actualizeWeather}
+          onEnterPress={actualizeWeather}
           disabled={weatherLoading}
           sx={{ flex: 1, marginRight: 2 }}
         />
         <SearchButton
           loading={weatherLoading}
-          onClick={updateWeatherIfNeeded}
+          onClick={actualizeWeather}
         />
       </Stack>
       <Box flex="0 1 10%" />
@@ -57,7 +48,5 @@ export default function HomePage() {
         loadingError={weatherLoadingError}
       />
     </Stack>
-
-    // </Stack>
   )
 }
