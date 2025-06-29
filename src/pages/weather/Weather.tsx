@@ -1,18 +1,26 @@
 import type { Weather } from "../useHomePageStore"
+import WeatherLoadingView from "./WeatherLoadingView"
+import WeatherLoadingErrorView from "./WeatherLoadingErrorView"
+import WeatherView from "./WeatherView"
+import NoCitySelectedView from "./NoCitySelectedView"
 
 interface Props {
-  weather: Weather
+  weather: Weather | null
+  loading: boolean
+  loadingError: Error | null
 }
 
 export default function Weather({
-  weather
+  weather,
+  loading,
+  loadingError,
 }: Props) {
-  return (
-    <div>
-      <p>current temp: {weather.currentTemp}</p>
-      <p>condition: {weather.condition}</p>
-      <p>wind speed km/h: {weather.windSpeed}</p>
-      <p>min-max temp today: {weather.todayTempRange[0]} - {weather.todayTempRange[1]}</p>
-    </div>
-  )
-}
+
+  return loadingError
+    ? <WeatherLoadingErrorView error={loadingError} />
+    : loading
+      ? <WeatherLoadingView />
+      : weather === null
+        ? <NoCitySelectedView />
+        : <WeatherView weather={weather} />
+  }

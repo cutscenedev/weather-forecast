@@ -1,7 +1,10 @@
+import axios from "axios";
 import { useWeatherApiConnector } from "../connectors/AppWeatherApiConnector"
 import { Root as ForecastResponse } from "./forecastResponse";
+import { WeatherApiProviderGeneralException } from "./WeatherApiProviderExceptions";
 
 export interface WeatherStats {
+  city: string
   currentTemp: number
   condition: string
   windSpeed: number
@@ -12,23 +15,32 @@ export default function ForecastApiProvider() {
   const weatherApiConnector = useWeatherApiConnector();
 
   async function getWeatherForCity(city: string): Promise<WeatherStats> {
-    const { data } = await weatherApiConnector.request<ForecastResponse>({
-      method: "GET",
-      url: `/forecast.json`,
-      params: {
-        q: city,
-      },
-    });
+    try {
+      const { data } = await weatherApiConnector.request<ForecastResponse>({
+        method: "GET",
+        url: `/forecast.json`,
+        params: {
+          q: city,
+        },
+      });
 
-    const weatherStats = mapForecastResponseToWeather(data);
+      const weatherStats = mapForecastResponseToWeather(data);
 
-    // remap api exception to custom errors with human readable messages
+      return weatherStats;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.data?.error?.message) {
+          throw new WeatherApiProviderGeneralException(error.response.data.error.message)
+        }
+      }
 
-    return weatherStats;
+      throw error
+    }
   }
 
   function mapForecastResponseToWeather(forecast: ForecastResponse): WeatherStats {
     return {
+      city: forecast.location.name,
       currentTemp: forecast.current.temp_c,
       condition: forecast.current.condition.text,
       windSpeed: forecast.current.wind_kph,

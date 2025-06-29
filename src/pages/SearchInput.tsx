@@ -1,10 +1,15 @@
-import Input from "@mui/material/Input"
+
+import { SxProps } from "@mui/material/styles"
+import TextField from "@mui/material/TextField"
 
 interface Props {
   value: string
   onChange: (v: string) => void
   onEnterPress: () => void
   onBlur: () => void
+  disabled: boolean
+  autoFocus?: boolean
+  sx?: SxProps
 }
 
 export default function SearchInput({
@@ -12,6 +17,9 @@ export default function SearchInput({
   onChange,
   onEnterPress,
   onBlur,
+  disabled,
+  autoFocus = false,
+  sx,
 }: Props) {
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     onChange(e.target.value)
@@ -24,12 +32,15 @@ export default function SearchInput({
   }
 
   return (
-    <Input
-        value={value}
-        onChange={handleChange}
-        onBlur={onBlur}
-        onKeyDown={handleKeyDown}
-        placeholder="London"
-      />
+    <TextField
+      autoFocus={autoFocus}
+      disabled={disabled}
+      value={value}
+      onChange={handleChange}
+      onBlur={onBlur}
+      onKeyDown={handleKeyDown}
+      placeholder="Berlin"
+      sx={sx}
+    />
   )
 }
