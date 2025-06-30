@@ -1,5 +1,5 @@
-import useHomePageStore from "./useHomePageStore";
-import SearchInput from "./SearchInput";
+import useHomePageStore from "./stores/useHomePageStore";
+import CitySearchInput from "./CitySearchInput";
 import SearchButton from "./SearchButton";
 import Stack from "@mui/material/Stack";
 import Weather from './weather/Weather'
@@ -13,40 +13,43 @@ export default function HomePage() {
     loadWeatherForCity,
     loadWeatherForEnteredCity,
 
-    cityName,
+    citySearchValue,
     searchHistory,
-    handleCityDelete,
-    changeCityName,
+    handleSearchHistoryDelete,
+    changeCitySearchValue,
   } = useHomePageStore();
 
   return (
     <Stack
-      flex={1}
+      flexGrow={1}
       maxWidth={400}
       minWidth={400}
       alignSelf="center"
       alignItems="stretch"
       px={3}
     >
-      <Box flex="0 1 25%" />
+      <Box flex="0 1 20%" />
+
       <Stack direction="row" justifyContent="stretch" alignItems="center">
-        <SearchInput
+        <CitySearchInput
           autoFocus
-          value={cityName}
+          value={citySearchValue}
           searchHistory={searchHistory}
           onSelect={loadWeatherForCity}
-          onDelete={handleCityDelete}
-          onInputChange={changeCityName}
+          onDelete={handleSearchHistoryDelete}
+          onInputChange={changeCitySearchValue}
           onEnterPress={loadWeatherForEnteredCity}
           disabled={weatherLoading}
-          sx={{ flex: 1, marginRight: 2 }}
+          sx={{ marginRight: 2 }}
         />
         <SearchButton
           loading={weatherLoading}
           onClick={loadWeatherForEnteredCity}
         />
       </Stack>
-      <Box flex="0 1 10%" />
+
+      <Box flex="0 1 20%" />
+
       <Weather
         weather={weather}
         loading={weatherLoading}

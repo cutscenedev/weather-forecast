@@ -1,5 +1,5 @@
 import Stack from "@mui/material/Stack"
-import { Weather } from "../useHomePageStore"
+import { Weather } from "../stores/useHomePageStore"
 import Grid from "@mui/material/Grid"
 
 interface Props {

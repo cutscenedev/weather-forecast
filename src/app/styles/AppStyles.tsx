@@ -6,7 +6,6 @@ import { PropsWithChildren } from "react";
 function AppStyles({ children }: PropsWithChildren) {
   const globalStyles: GlobalStylesProps["styles"] = {
     "height": "100%",
-    "width": "100%",
   };
 
   return (

@@ -1,4 +1,4 @@
-import type { Weather } from "../useHomePageStore"
+import type { Weather } from "../stores/useHomePageStore"
 import WeatherLoadingView from "./WeatherLoadingView"
 import WeatherLoadingErrorView from "./WeatherLoadingErrorView"
 import WeatherView from "./WeatherView"

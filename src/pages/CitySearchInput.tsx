@@ -2,11 +2,10 @@
 import Autocomplete from "@mui/material/Autocomplete"
 import { SxProps } from "@mui/material/styles"
 import TextField from "@mui/material/TextField"
-import { WeatherSearchHistory } from "./useHomePageStore"
 import CloseIcon from '@mui/icons-material/Close';
-import Icon from "@mui/material/Icon"
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
+import { WeatherSearchHistory } from "./stores/useSearchHistoryStore";
 
 interface Props {
   value: string
@@ -20,7 +19,7 @@ interface Props {
   sx?: SxProps
 }
 
-export default function SearchInput({
+export default function CitySearchInput({
   value,
   searchHistory,
   onInputChange,
@@ -39,18 +38,27 @@ export default function SearchInput({
 
   return (
     <Autocomplete
+      fullWidth
       clearOnEscape
       disableClearable
-      blurOnSelect
       value={value}
       autoFocus={autoFocus}
       disabled={disabled}
-      onChange={(_, v) => onSelect(v || "")}
       inputValue={value}
+      onChange={(_, v) => onSelect(v || "")}
       onInputChange={(_, v) => onInputChange(v)}
       onKeyDown={handleKeyDown}
       options={searchHistory}
       sx={sx}
+
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          label="City"
+          placeholder="Berlin"
+        />
+      )}
+
       renderOption={(props, option) => {
         const { key, ...optionProps } = props;
 
@@ -70,13 +78,6 @@ export default function SearchInput({
           </li>
         );
       }}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label="City"
-          placeholder="Berlin"
-        />
-      )}
     />
   )
 }
