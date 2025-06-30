@@ -20,41 +20,41 @@ export default function HomePage() {
   } = useHomePageStore();
 
   return (
-    <Stack
-      flexGrow={1}
-      maxWidth={400}
-      minWidth={400}
-      alignSelf="center"
-      alignItems="stretch"
-      px={3}
-    >
-      <Box flex="0 1 20%" />
+    <Stack flex={1} alignItems="center">
+      <Stack
+        flexGrow={1}
+        maxWidth={500}
+        minWidth={300}
+        width="100%"
+        alignItems="stretch"
+        px={3}
+      >
+        <Box flex="0 1 20%" />
 
-      <Stack direction="row" justifyContent="stretch" alignItems="center">
-        <CitySearchInput
-          autoFocus
-          value={citySearchValue}
-          searchHistory={searchHistory}
-          onSelect={loadWeatherForCity}
-          onDelete={handleSearchHistoryDelete}
-          onInputChange={changeCitySearchValue}
-          onEnterPress={loadWeatherForEnteredCity}
-          disabled={weatherLoading}
-          sx={{ marginRight: 2 }}
-        />
-        <SearchButton
+        <Stack direction="row" justifyContent="stretch" alignItems="center" mb={4}>
+          <CitySearchInput
+            autoFocus
+            value={citySearchValue}
+            searchHistory={searchHistory}
+            onSelect={loadWeatherForCity}
+            onDelete={handleSearchHistoryDelete}
+            onInputChange={changeCitySearchValue}
+            onEnterPress={loadWeatherForEnteredCity}
+            disabled={weatherLoading}
+            sx={{ marginRight: 2 }}
+          />
+          <SearchButton
+            loading={weatherLoading}
+            onClick={loadWeatherForEnteredCity}
+          />
+        </Stack>
+
+        <Weather
+          weather={weather}
           loading={weatherLoading}
-          onClick={loadWeatherForEnteredCity}
+          loadingError={weatherLoadingError}
         />
       </Stack>
-
-      <Box flex="0 1 20%" />
-
-      <Weather
-        weather={weather}
-        loading={weatherLoading}
-        loadingError={weatherLoadingError}
-      />
     </Stack>
   )
 }

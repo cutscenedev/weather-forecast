@@ -41,6 +41,7 @@ export default function CitySearchInput({
       fullWidth
       clearOnEscape
       disableClearable
+      size="small"
       value={value}
       autoFocus={autoFocus}
       disabled={disabled}
@@ -50,6 +51,15 @@ export default function CitySearchInput({
       onKeyDown={handleKeyDown}
       options={searchHistory}
       sx={sx}
+
+      slotProps={{
+        listbox: {
+          style: {
+            maxHeight: 200, // 3 items * 48px (default item height)
+            overflowY: 'auto',
+          }
+        }
+      }}
 
       renderInput={(params) => (
         <TextField
@@ -69,10 +79,13 @@ export default function CitySearchInput({
         }
 
         return (
-          <li key={key} {...optionProps}>
+          <li
+            key={key}
+            {...optionProps}
+            style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+          >
             {option}
-            <Box width="100%" />
-            <IconButton onClick={handleDeleteClick}>
+            <IconButton size="small" onClick={handleDeleteClick}>
               <CloseIcon />
             </IconButton>
           </li>

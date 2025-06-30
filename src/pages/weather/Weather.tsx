@@ -16,11 +16,13 @@ export default function Weather({
   loadingError,
 }: Props) {
 
-  return loadingError
-    ? <WeatherLoadingErrorView error={loadingError} />
-    : loading
-      ? <WeatherLoadingView />
-      : weather === null
-        ? <NoCitySelectedView />
-        : <WeatherView weather={weather} />
+  if (loadingError) {
+    return <WeatherLoadingErrorView error={loadingError} />
   }
+
+  if (weather || loading) {
+    return <WeatherView weather={weather} loading={loading} />
+  }
+
+  return <NoCitySelectedView />;
+}

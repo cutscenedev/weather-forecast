@@ -1,27 +1,72 @@
-import Stack from "@mui/material/Stack"
-import { Weather } from "../stores/useHomePageStore"
+import Card from "@mui/material/Card"
+import CardContent from "@mui/material/CardContent"
+import Typography from "@mui/material/Typography"
 import Grid from "@mui/material/Grid"
+import { Weather } from "../stores/useHomePageStore"
+import Skeleton from "@mui/material/Skeleton"
 
 interface Props {
-  weather: Weather
+  weather: Weather | null
+  loading: boolean
 }
 
 export default function WeatherView({
   weather,
+  loading,
 }: Props) {
-
   return (
-    <Grid container>
-      <Grid size={8}>City:</Grid>
-      <Grid size={4}>{weather.city}</Grid>
-      <Grid size={8}>Current temp:</Grid>
-      <Grid size={4}>{weather.currentTemp}</Grid>
-      <Grid size={8}>Condition:</Grid>
-      <Grid size={4}>{weather.condition}</Grid>
-      <Grid size={8}>Wind speed (km/h):</Grid>
-      <Grid size={4}>{weather.windSpeed}</Grid>
-      <Grid size={8}>Temp today (min-max):</Grid>
-      <Grid size={4}>{weather.todayTempRange[0]} - {weather.todayTempRange[1]}</Grid>
-    </Grid>
+    <Card sx={{ width: "100%", bgcolor: "background.default", borderRadius: 3, boxShadow: 3 }}>
+      <CardContent>
+        <Grid container spacing={2}>
+          <Grid size={8}>
+            <Typography color="text.secondary">City:</Typography>
+          </Grid>
+          <Grid size={4}>
+            {loading
+              ? <Skeleton />
+              : <Typography fontWeight="bold">{weather!.city}</Typography>
+            }
+          </Grid>
+          <Grid size={8}>
+            <Typography color="text.secondary">Current temp:</Typography>
+          </Grid>
+          <Grid size={4}>
+            {loading
+              ? <Skeleton />
+              : <Typography fontWeight="bold">{weather!.currentTemp}</Typography>
+            }
+          </Grid>
+          <Grid size={8}>
+            <Typography color="text.secondary">Condition:</Typography>
+          </Grid>
+          <Grid size={4}>
+            {loading
+              ? <Skeleton />
+              : <Typography fontWeight="bold">{weather!.condition}</Typography>
+            }
+          </Grid>
+          <Grid size={8}>
+            <Typography color="text.secondary">Wind speed (km/h):</Typography>
+          </Grid>
+          <Grid size={4}>
+            {loading
+              ? <Skeleton />
+              : <Typography fontWeight="bold">{weather!.windSpeed}</Typography>
+            }
+          </Grid>
+          <Grid size={8}>
+            <Typography color="text.secondary">Temp today (min-max):</Typography>
+          </Grid>
+          <Grid size={4}>
+            {loading
+              ? <Skeleton />
+              : <Typography fontWeight="bold">
+                  {weather!.todayTempRange[0]}° - {weather!.todayTempRange[1]}°
+                </Typography>
+            }
+          </Grid>
+        </Grid>
+      </CardContent>
+    </Card>
   )
 }
