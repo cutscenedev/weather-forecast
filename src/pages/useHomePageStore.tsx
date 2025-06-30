@@ -7,7 +7,7 @@ import { useAppStorageService } from "../app/services/AppStorageService";
 
 export interface Weather extends Readonly<WeatherStats> {}
 
-type WeatherSearchHistory = string[]
+export type WeatherSearchHistory = string[]
 
 const STORAGE_WEATHER_SEARCH_HISTORY_KEY = 'weather-search-history'
 const MAX_SEARCH_HISTORY_LENGTH = 10
@@ -36,9 +36,26 @@ export default function useHomePageStore() {
     searchHistoryNoDuplicates.splice(MAX_SEARCH_HISTORY_LENGTH)
 
     setSearchHistory(searchHistoryNoDuplicates)
+
+    return searchHistoryNoDuplicates
   }
 
-  function syncSearchHistoryToStorage() {
+  function removeItemFromSearchHistory(searchItem: string) {
+    const searchHistoryCopy = [...searchHistory]
+
+    const searchHistoryWithoutItem = searchHistoryCopy.filter(v => v !== searchItem)
+
+    setSearchHistory(searchHistoryWithoutItem)
+
+    return searchHistoryWithoutItem;
+  }
+
+  function handleCityDelete(searchItem: string) {
+    const newSearchHistory = removeItemFromSearchHistory(searchItem);
+    syncSearchHistoryToStorage(newSearchHistory)
+  }
+
+  function syncSearchHistoryToStorage(searchHistory: WeatherSearchHistory) {
     appStorage.set(
       STORAGE_WEATHER_SEARCH_HISTORY_KEY,
       searchHistory,
@@ -52,9 +69,15 @@ export default function useHomePageStore() {
     return storedWeatherSearchHistory || []
   }
 
-  async function actualizeWeather() {
-    const city = cityName.trim()
+  function selectCity(city: string) {
+    loadWeatherForCity(city)
+  }
 
+  function loadWeatherForEnteredCity() {
+    return loadWeatherForCity(cityName)
+  }
+
+  async function loadWeatherForCity(city: string) {
     if (city.length === 0) {
       return;
     }
@@ -66,8 +89,8 @@ export default function useHomePageStore() {
     try {
       const response = await weatherApiProvider.getWeatherForCity(city);
 
-      addItemToSearchHistory(response.city);
-      syncSearchHistoryToStorage();
+      const newSearchHistory = addItemToSearchHistory(response.city);
+      syncSearchHistoryToStorage(newSearchHistory);
       setWeather(response);
     } catch (error) {
       if (error instanceof WeatherApiNetworkException) {
@@ -92,9 +115,13 @@ export default function useHomePageStore() {
     weather,
     weatherLoading,
     weatherLoadingError,
-    actualizeWeather,
+    loadWeatherForCity,
+    loadWeatherForEnteredCity,
 
     cityName,
+    searchHistory,
     changeCityName,
+    handleCityDelete,
+    selectCity,
   }
 }
