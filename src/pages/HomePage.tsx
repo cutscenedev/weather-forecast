@@ -10,9 +10,12 @@ export default function HomePage() {
     weather,
     weatherLoading,
     weatherLoadingError,
-    actualizeWeather,
+    loadWeatherForCity,
+    loadWeatherForEnteredCity,
 
     cityName,
+    searchHistory,
+    handleCityDelete,
     changeCityName,
   } = useHomePageStore();
 
@@ -30,15 +33,17 @@ export default function HomePage() {
         <SearchInput
           autoFocus
           value={cityName}
-          onChange={changeCityName}
-          onBlur={actualizeWeather}
-          onEnterPress={actualizeWeather}
+          searchHistory={searchHistory}
+          onSelect={loadWeatherForCity}
+          onDelete={handleCityDelete}
+          onInputChange={changeCityName}
+          onEnterPress={loadWeatherForEnteredCity}
           disabled={weatherLoading}
           sx={{ flex: 1, marginRight: 2 }}
         />
         <SearchButton
           loading={weatherLoading}
-          onClick={actualizeWeather}
+          onClick={loadWeatherForEnteredCity}
         />
       </Stack>
       <Box flex="0 1 10%" />
